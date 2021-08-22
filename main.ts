@@ -83,7 +83,7 @@ class SampleSettingTab extends PluginSettingTab {
 
 		containerEl.empty();
 
-		containerEl.createEl('h2', { text: 'Settings for my awesome plugin.' });
+		containerEl.createEl('h2', { text: 'Command alias' });
 
 		new Setting(containerEl)
 			.setName('Setting #1')
