@@ -92,10 +92,11 @@ class SampleSettingTab extends PluginSettingTab {
 		let app = this.app as AppExtension;
 		let options: Record<string, string> = { "": "--- command list ---" };
 		for (const key in app.commands.commands) {
-			if (Object.prototype.hasOwnProperty.call(app.commands.commands, key)) {
-				const command = app.commands.commands[key];
-				options[key] = command.name;
+			if (!Object.prototype.hasOwnProperty.call(app.commands.commands, key)) {
+				continue;
 			}
+			const command = app.commands.commands[key];
+			options[key] = command.name;
 		}
 
 
