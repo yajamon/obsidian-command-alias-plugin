@@ -133,6 +133,7 @@ class SampleSettingTab extends PluginSettingTab {
 						commandId: selectedCommandId,
 					}
 					await this.plugin.saveSettings();
+					this.display();
 				}));
 
 		// remove alias
