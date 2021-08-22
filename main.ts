@@ -134,5 +134,27 @@ class SampleSettingTab extends PluginSettingTab {
 					}
 					await this.plugin.saveSettings();
 				}));
+
+		// remove alias
+		containerEl.createEl('h3', { text: 'Register aliases' });
+
+		for (const aliasId in this.plugin.settings.aliases) {
+			if (!Object.prototype.hasOwnProperty.call(this.plugin.settings.aliases, aliasId)) {
+				continue;
+			}
+			const alias = this.plugin.settings.aliases[aliasId];
+			const command = app.commands.commands[alias.commandId];
+			const commandName = command.name || 'command missing';
+			new Setting(containerEl)
+				.setName(alias.name)
+				.setDesc(commandName)
+				.addButton(button => button
+					.setButtonText('Remove')
+					.onClick(async e => {
+						delete this.plugin.settings.aliases[aliasId];
+						await this.plugin.saveSettings();
+						this.display();
+					}));
+		}
 	}
 }
