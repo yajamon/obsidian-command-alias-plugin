@@ -115,5 +115,21 @@ class SampleSettingTab extends PluginSettingTab {
 					console.log("select command");
 					selectedCommandId = value;
 				}));
+		let aliasName = "";
+		new Setting(containerEl)
+			.setName('Add alias')
+			.addText(text => text
+				.setPlaceholder('alias name')
+				.onChange(value => {
+					aliasName = value;
+				}))
+			.addButton(button => button
+				.setButtonText('Add')
+				.onClick(e => {
+					if (selectedCommandId == "" || aliasName == "") {
+						return;
+					}
+					console.log('Add alias:', aliasName, "id:", selectedCommandId);
+				}));
 	}
 }
