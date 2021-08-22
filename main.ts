@@ -81,6 +81,16 @@ class SampleSettingTab extends PluginSettingTab {
 	display(): void {
 		let { containerEl } = this;
 
+		let app = this.app as AppExtension;
+		let options: Record<string, string> = { "": "--- command list ---" };
+		for (const key in app.commands.commands) {
+			if (Object.prototype.hasOwnProperty.call(app.commands.commands, key)) {
+				const command = app.commands.commands[key];
+				options[key] = command.name;
+			}
+		}
+
+
 		containerEl.empty();
 
 		containerEl.createEl('h2', { text: 'Command alias' });
@@ -95,6 +105,15 @@ class SampleSettingTab extends PluginSettingTab {
 					console.log('Secret: ' + value);
 					this.plugin.settings.mySetting = value;
 					await this.plugin.saveSettings();
+				}));
+		let selectedCommandId = "";
+		new Setting(containerEl)
+			.setName('Select command')
+			.addDropdown(dropdown => dropdown
+				.addOptions(options)
+				.onChange(value => {
+					console.log("select command");
+					selectedCommandId = value;
 				}));
 	}
 }
