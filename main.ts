@@ -36,31 +36,24 @@ export default class MyPlugin extends Plugin {
 
 		await this.loadSettings();
 
-		this.addCommand({
-			id: 'alias:app:toggle-right-sidebar',
-			name: '右のサイドバーを開閉',
-			callback: () => {
-				app.commands.commands['app:toggle-right-sidebar'].callback();
+		for (const aliasId in this.settings.aliases) {
+			if (!Object.prototype.hasOwnProperty.call(this.settings.aliases, aliasId)) {
+				continue;
 			}
-		});
-
-		this.addCommand({
-			id: 'open-sample-modal',
-			name: 'Open Sample Modal',
-			// callback: () => {
-			// 	console.log('Simple Callback');
-			// },
-			checkCallback: (checking: boolean) => {
-				let leaf = this.app.workspace.activeLeaf;
-				if (leaf) {
-					if (!checking) {
-						// do something
-					}
-					return true;
-				}
-				return false;
+			const alias = this.settings.aliases[aliasId];
+			const target = app.commands.commands[alias.commandId];
+			let command: Command = {
+				id: `alias:${aliasId}`,
+				name: `${alias.name}: ${target.name}`,
+			};
+			if (target.callback) {
+				command.callback = target.callback;
 			}
-		});
+			if (target.checkCallback) {
+				command.checkCallback = target.checkCallback;
+			}
+			this.addCommand(command);
+		}
 
 		this.addSettingTab(new SampleSettingTab(this.app, this));
 	}
@@ -120,6 +113,7 @@ class SampleSettingTab extends PluginSettingTab {
 		let aliasName = "";
 		new Setting(containerEl)
 			.setName('Add alias')
+			.setDesc('Reload is required to apply.')
 			.addText(text => text
 				.setPlaceholder('alias name')
 				.onChange(value => {
@@ -131,8 +125,8 @@ class SampleSettingTab extends PluginSettingTab {
 					if (selectedCommandId == "" || aliasName == "") {
 						return;
 					}
-					console.log('Add alias:', aliasName, "id:", selectedCommandId);
-					let aliasId = Date.now.toString();
+					let aliasId = Date.now().toString();
+					console.log('Add id:', aliasId, 'alias:', aliasName, "command:", selectedCommandId);
 					this.plugin.settings.aliases[aliasId] = {
 						name: aliasName,
 						commandId: selectedCommandId,
