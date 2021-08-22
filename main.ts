@@ -124,8 +124,8 @@ class SampleSettingTab extends PluginSettingTab {
 					if (selectedCommandId == "" || aliasName == "") {
 						return;
 					}
-					console.log('Add alias:', aliasName, "id:", selectedCommandId);
-					let aliasId = Date.now.toString();
+					let aliasId = Date.now().toString();
+					console.log('Add id:', aliasId, 'alias:', aliasName, "command:", selectedCommandId);
 					this.plugin.settings.aliases[aliasId] = {
 						name: aliasName,
 						commandId: selectedCommandId,
