@@ -1,11 +1,19 @@
 import { App, Command, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
 interface MyPluginSettings {
-	mySetting: string;
+	aliases: AliasMap;
+}
+
+type AliasMap = {
+	[key: string]: Alias;
+}
+interface Alias {
+	name: string;
+	commandId: string;
 }
 
 const DEFAULT_SETTINGS: MyPluginSettings = {
-	mySetting: 'default'
+	aliases: {}
 }
 
 class AppExtension extends App {
