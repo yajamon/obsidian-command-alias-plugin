@@ -113,6 +113,7 @@ class SampleSettingTab extends PluginSettingTab {
 		let aliasName = "";
 		new Setting(containerEl)
 			.setName('Add alias')
+			.setDesc('Reload is required to apply.')
 			.addText(text => text
 				.setPlaceholder('alias name')
 				.onChange(value => {
