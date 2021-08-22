@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { App, Command, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
 interface MyPluginSettings {
@@ -118,15 +119,21 @@ class SampleSettingTab extends PluginSettingTab {
 			.addText(text => text
 				.setPlaceholder('alias name')
 				.onChange(value => {
-					aliasName = value;
+					aliasName = value.trim();
 				}))
 			.addButton(button => button
 				.setButtonText('Add')
-				.onClick(e => {
+				.onClick(async e => {
 					if (selectedCommandId == "" || aliasName == "") {
 						return;
 					}
 					console.log('Add alias:', aliasName, "id:", selectedCommandId);
+					let aliasId = randomUUID();
+					this.plugin.settings.aliases[aliasId] = {
+						name: aliasName,
+						commandId: selectedCommandId,
+					}
+					await this.plugin.saveSettings();
 				}));
 	}
 }
