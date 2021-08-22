@@ -1,11 +1,19 @@
 import { App, Command, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
 interface MyPluginSettings {
-	mySetting: string;
+	aliases: AliasMap;
+}
+
+type AliasMap = {
+	[key: string]: Alias;
+}
+interface Alias {
+	name: string;
+	commandId: string;
 }
 
 const DEFAULT_SETTINGS: MyPluginSettings = {
-	mySetting: 'default'
+	aliases: {}
 }
 
 class AppExtension extends App {
@@ -81,20 +89,73 @@ class SampleSettingTab extends PluginSettingTab {
 	display(): void {
 		let { containerEl } = this;
 
+		let app = this.app as AppExtension;
+		let options: Record<string, string> = { "": "--- command list ---" };
+		for (const key in app.commands.commands) {
+			if (Object.prototype.hasOwnProperty.call(app.commands.commands, key)) {
+				const command = app.commands.commands[key];
+				options[key] = command.name;
+			}
+		}
+
+
 		containerEl.empty();
 
-		containerEl.createEl('h2', { text: 'Settings for my awesome plugin.' });
+		containerEl.createEl('h2', { text: 'Command alias' });
 
+		let selectedCommandId = "";
 		new Setting(containerEl)
-			.setName('Setting #1')
-			.setDesc('It\'s a secret')
-			.addText(text => text
-				.setPlaceholder('Enter your secret')
-				.setValue('')
-				.onChange(async (value) => {
-					console.log('Secret: ' + value);
-					this.plugin.settings.mySetting = value;
-					await this.plugin.saveSettings();
+			.setName('Select command')
+			.addDropdown(dropdown => dropdown
+				.addOptions(options)
+				.onChange(value => {
+					console.log("select command");
+					selectedCommandId = value;
 				}));
+		let aliasName = "";
+		new Setting(containerEl)
+			.setName('Add alias')
+			.addText(text => text
+				.setPlaceholder('alias name')
+				.onChange(value => {
+					aliasName = value.trim();
+				}))
+			.addButton(button => button
+				.setButtonText('Add')
+				.onClick(async e => {
+					if (selectedCommandId == "" || aliasName == "") {
+						return;
+					}
+					console.log('Add alias:', aliasName, "id:", selectedCommandId);
+					let aliasId = Date.now.toString();
+					this.plugin.settings.aliases[aliasId] = {
+						name: aliasName,
+						commandId: selectedCommandId,
+					}
+					await this.plugin.saveSettings();
+					this.display();
+				}));
+
+		// remove alias
+		containerEl.createEl('h3', { text: 'Register aliases' });
+
+		for (const aliasId in this.plugin.settings.aliases) {
+			if (!Object.prototype.hasOwnProperty.call(this.plugin.settings.aliases, aliasId)) {
+				continue;
+			}
+			const alias = this.plugin.settings.aliases[aliasId];
+			const command = app.commands.commands[alias.commandId];
+			const commandName = command.name || 'command missing';
+			new Setting(containerEl)
+				.setName(alias.name)
+				.setDesc(commandName)
+				.addButton(button => button
+					.setButtonText('Remove')
+					.onClick(async e => {
+						delete this.plugin.settings.aliases[aliasId];
+						await this.plugin.saveSettings();
+						this.display();
+					}));
+		}
 	}
 }
