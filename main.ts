@@ -44,7 +44,7 @@ export default class MyPlugin extends Plugin {
 			const target = app.commands.commands[alias.commandId];
 			let command: Command = {
 				id: `alias:${aliasId}`,
-				name: `${alias.name}:${target.name}`,
+				name: `${alias.name}: ${target.name}`,
 			};
 			if (target.callback) {
 				command.callback = target.callback;
