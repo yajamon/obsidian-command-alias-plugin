@@ -55,32 +55,6 @@ export default class MyPlugin extends Plugin {
 			this.addCommand(command);
 		}
 
-		this.addCommand({
-			id: 'alias:app:toggle-right-sidebar',
-			name: '右のサイドバーを開閉',
-			callback: () => {
-				app.commands.commands['app:toggle-right-sidebar'].callback();
-			}
-		});
-
-		this.addCommand({
-			id: 'open-sample-modal',
-			name: 'Open Sample Modal',
-			// callback: () => {
-			// 	console.log('Simple Callback');
-			// },
-			checkCallback: (checking: boolean) => {
-				let leaf = this.app.workspace.activeLeaf;
-				if (leaf) {
-					if (!checking) {
-						// do something
-					}
-					return true;
-				}
-				return false;
-			}
-		});
-
 		this.addSettingTab(new SampleSettingTab(this.app, this));
 	}
 
