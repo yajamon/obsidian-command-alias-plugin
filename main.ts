@@ -1,4 +1,4 @@
-import { App, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { App, Command, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
 interface MyPluginSettings {
 	mySetting: string;
@@ -8,11 +8,23 @@ const DEFAULT_SETTINGS: MyPluginSettings = {
 	mySetting: 'default'
 }
 
+class AppExtension extends App {
+	commands: {
+		commands: CommandMap
+	}
+}
+
+type CommandMap = {
+	[key: string]: Command;
+}
+
 export default class MyPlugin extends Plugin {
 	settings: MyPluginSettings;
 
 	async onload() {
 		console.log('loading plugin');
+
+		let app = this.app as AppExtension;
 
 		await this.loadSettings();
 
