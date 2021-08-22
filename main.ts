@@ -29,6 +29,14 @@ export default class MyPlugin extends Plugin {
 		await this.loadSettings();
 
 		this.addCommand({
+			id: 'alias:app:toggle-right-sidebar',
+			name: '右のサイドバーを開閉',
+			callback: () => {
+				app.commands.commands['app:toggle-right-sidebar'].callback();
+			}
+		});
+
+		this.addCommand({
 			id: 'open-sample-modal',
 			name: 'Open Sample Modal',
 			// callback: () => {
