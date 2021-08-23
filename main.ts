@@ -67,7 +67,7 @@ export default class MyPlugin extends Plugin {
 			// fallback
 			let command: Command = {
 				id: `alias:${aliasId}`,
-				name: `${alias.name}: Missing command. Re-bind.`,
+				name: `${alias.name}: Missing command. Run this and try rebinding.`,
 				callback: () => {
 					this.unload();
 					this.load();
