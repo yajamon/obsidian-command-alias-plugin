@@ -88,7 +88,7 @@ class SampleSettingTab extends PluginSettingTab {
 			if (!Object.prototype.hasOwnProperty.call(app.commands.commands, key)) {
 				continue;
 			}
-			if (key.startsWith('obsidian-commard-alias-plugin:')) {
+			if (key.startsWith('obsidian-command-alias-plugin:')) {
 				continue;
 			}
 
