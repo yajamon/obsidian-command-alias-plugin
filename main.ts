@@ -40,8 +40,18 @@ export default class MyPlugin extends Plugin {
 			if (!Object.prototype.hasOwnProperty.call(this.settings.aliases, aliasId)) {
 				continue;
 			}
-			const alias = this.settings.aliases[aliasId];
-			const target = app.commands.commands[alias.commandId];
+			this.addAliasCommand(aliasId);
+		}
+
+		this.addSettingTab(new SampleSettingTab(this.app, this));
+	}
+
+	private addAliasCommand(aliasId: string) {
+		let app = this.app as AppExtension;
+
+		const alias = this.settings.aliases[aliasId];
+		const target = app.commands.commands[alias.commandId];
+		if (target) {
 			let command: Command = {
 				id: `alias:${aliasId}`,
 				name: `${alias.name}: ${target.name}`,
@@ -53,9 +63,18 @@ export default class MyPlugin extends Plugin {
 				command.checkCallback = target.checkCallback;
 			}
 			this.addCommand(command);
+		} else {
+			// fallback
+			let command: Command = {
+				id: `alias:${aliasId}`,
+				name: `${alias.name}: Missing command. Re-bind.`,
+				callback: () => {
+					this.unload();
+					this.load();
+				}
+			}
+			this.addCommand(command);
 		}
-
-		this.addSettingTab(new SampleSettingTab(this.app, this));
 	}
 
 	onunload() {
