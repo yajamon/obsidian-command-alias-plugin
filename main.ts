@@ -65,6 +65,15 @@ export default class MyPlugin extends Plugin {
 			this.addCommand(command);
 		} else {
 			// fallback
+			let command: Command = {
+				id: `alias:${aliasId}`,
+				name: `${alias.name}: Missing command. Re-bind.`,
+				callback: () => {
+					this.unload();
+					this.load();
+				}
+			}
+			this.addCommand(command);
 		}
 	}
 
