@@ -51,17 +51,21 @@ export default class MyPlugin extends Plugin {
 
 		const alias = this.settings.aliases[aliasId];
 		const target = app.commands.commands[alias.commandId];
-		let command: Command = {
-			id: `alias:${aliasId}`,
-			name: `${alias.name}: ${target.name}`,
-		};
-		if (target.callback) {
-			command.callback = target.callback;
+		if (target) {
+			let command: Command = {
+				id: `alias:${aliasId}`,
+				name: `${alias.name}: ${target.name}`,
+			};
+			if (target.callback) {
+				command.callback = target.callback;
+			}
+			if (target.checkCallback) {
+				command.checkCallback = target.checkCallback;
+			}
+			this.addCommand(command);
+		} else {
+			// fallback
 		}
-		if (target.checkCallback) {
-			command.checkCallback = target.checkCallback;
-		}
-		this.addCommand(command);
 	}
 
 	onunload() {
