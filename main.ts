@@ -1,6 +1,6 @@
 import { App, Command, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
-interface MyPluginSettings {
+interface CommandAliasPluginSettings {
 	aliases: AliasMap;
 }
 
@@ -12,7 +12,7 @@ interface Alias {
 	commandId: string;
 }
 
-const DEFAULT_SETTINGS: MyPluginSettings = {
+const DEFAULT_SETTINGS: CommandAliasPluginSettings = {
 	aliases: {}
 }
 
@@ -27,7 +27,7 @@ type CommandMap = {
 }
 
 export default class CommandAliasPlugin extends Plugin {
-	settings: MyPluginSettings;
+	settings: CommandAliasPluginSettings;
 
 	async onload() {
 		console.log('loading plugin');
