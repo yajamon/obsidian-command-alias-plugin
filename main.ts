@@ -43,7 +43,7 @@ export default class CommandAliasPlugin extends Plugin {
 			this.addAliasCommand(aliasId);
 		}
 
-		this.addSettingTab(new SampleSettingTab(this.app, this));
+		this.addSettingTab(new CommandAliasPluginSettingTab(this.app, this));
 	}
 
 	private addAliasCommand(aliasId: string) {
@@ -90,7 +90,7 @@ export default class CommandAliasPlugin extends Plugin {
 	}
 }
 
-class SampleSettingTab extends PluginSettingTab {
+class CommandAliasPluginSettingTab extends PluginSettingTab {
 	plugin: CommandAliasPlugin;
 
 	constructor(app: App, plugin: CommandAliasPlugin) {
