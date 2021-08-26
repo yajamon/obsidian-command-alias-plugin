@@ -26,7 +26,7 @@ type CommandMap = {
 	[key: string]: Command;
 }
 
-export default class MyPlugin extends Plugin {
+export default class CommandAliasPlugin extends Plugin {
 	settings: MyPluginSettings;
 
 	async onload() {
@@ -91,9 +91,9 @@ export default class MyPlugin extends Plugin {
 }
 
 class SampleSettingTab extends PluginSettingTab {
-	plugin: MyPlugin;
+	plugin: CommandAliasPlugin;
 
-	constructor(app: App, plugin: MyPlugin) {
+	constructor(app: App, plugin: CommandAliasPlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}
