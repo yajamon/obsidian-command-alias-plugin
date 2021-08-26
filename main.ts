@@ -1,6 +1,6 @@
 import { App, Command, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
-interface MyPluginSettings {
+interface CommandAliasPluginSettings {
 	aliases: AliasMap;
 }
 
@@ -12,7 +12,7 @@ interface Alias {
 	commandId: string;
 }
 
-const DEFAULT_SETTINGS: MyPluginSettings = {
+const DEFAULT_SETTINGS: CommandAliasPluginSettings = {
 	aliases: {}
 }
 
@@ -26,8 +26,8 @@ type CommandMap = {
 	[key: string]: Command;
 }
 
-export default class MyPlugin extends Plugin {
-	settings: MyPluginSettings;
+export default class CommandAliasPlugin extends Plugin {
+	settings: CommandAliasPluginSettings;
 
 	async onload() {
 		console.log('loading plugin');
@@ -43,7 +43,7 @@ export default class MyPlugin extends Plugin {
 			this.addAliasCommand(aliasId);
 		}
 
-		this.addSettingTab(new SampleSettingTab(this.app, this));
+		this.addSettingTab(new CommandAliasPluginSettingTab(this.app, this));
 	}
 
 	private addAliasCommand(aliasId: string) {
@@ -90,10 +90,10 @@ export default class MyPlugin extends Plugin {
 	}
 }
 
-class SampleSettingTab extends PluginSettingTab {
-	plugin: MyPlugin;
+class CommandAliasPluginSettingTab extends PluginSettingTab {
+	plugin: CommandAliasPlugin;
 
-	constructor(app: App, plugin: MyPlugin) {
+	constructor(app: App, plugin: CommandAliasPlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}
