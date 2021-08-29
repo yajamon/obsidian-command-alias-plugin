@@ -1,4 +1,5 @@
 import { App, Command, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { AppExtension } from "./uncover-obsidian";
 
 interface CommandAliasPluginSettings {
 	aliases: AliasMap;
@@ -14,16 +15,6 @@ interface Alias {
 
 const DEFAULT_SETTINGS: CommandAliasPluginSettings = {
 	aliases: {}
-}
-
-class AppExtension extends App {
-	commands: {
-		commands: CommandMap
-	}
-}
-
-type CommandMap = {
-	[key: string]: Command;
 }
 
 export default class CommandAliasPlugin extends Plugin {
