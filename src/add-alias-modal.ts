@@ -81,6 +81,7 @@ class NamingModal extends Modal {
                     this.plugin.unload();
                     this.plugin.load();
                 }));
+        contentEl.find('input').focus();
     }
 
     onClose() {
