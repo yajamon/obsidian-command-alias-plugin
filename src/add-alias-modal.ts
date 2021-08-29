@@ -31,6 +31,7 @@ export class CommandSuggestionModal extends FuzzySuggestModal<SuggestElement> {
     onChooseItem(item: SuggestElement, evt: MouseEvent | KeyboardEvent): void {
         let m = new NamingModal({
             app: this.app,
+            command: item,
         });
         m.open();
     }
@@ -38,16 +39,21 @@ export class CommandSuggestionModal extends FuzzySuggestModal<SuggestElement> {
 
 type NamingModalParams = {
     app: App,
+    command: SuggestElement,
 }
 class NamingModal extends Modal {
+    private command: SuggestElement;
     constructor(params: NamingModalParams) {
-        let { app } = params;
+        let { app, command } = params;
         super(app);
+        this.command = command;
     }
 
     onOpen() {
         let { contentEl } = this;
         contentEl.createEl('h2', { text: "Add alias" });
+
+        contentEl.createSpan({ text: this.command.commandName });
     }
 
     onClose() {
