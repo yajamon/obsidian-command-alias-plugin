@@ -1,18 +1,18 @@
 import { App, FuzzySuggestModal, Modal } from "obsidian";
 import { AppExtension } from "./uncover-obsidian";
 
-interface SuggestElement {
+interface CommandInfo {
     commandId: string;
     commandName: string;
 }
 
-export class CommandSuggestionModal extends FuzzySuggestModal<SuggestElement> {
-    private items: SuggestElement[];
+export class CommandSuggestionModal extends FuzzySuggestModal<CommandInfo> {
+    private items: CommandInfo[];
     constructor(app: App) {
         super(app);
 
         let appex = app as AppExtension;
-        let items: SuggestElement[] = [];
+        let items: CommandInfo[] = [];
         for (let id in appex.commands.commands) {
             items.push({
                 commandId: id,
@@ -22,13 +22,13 @@ export class CommandSuggestionModal extends FuzzySuggestModal<SuggestElement> {
         this.items = items;
     }
 
-    getItems(): SuggestElement[] {
+    getItems(): CommandInfo[] {
         return this.items;
     }
-    getItemText(item: SuggestElement): string {
+    getItemText(item: CommandInfo): string {
         return item.commandName;
     }
-    onChooseItem(item: SuggestElement, evt: MouseEvent | KeyboardEvent): void {
+    onChooseItem(item: CommandInfo, evt: MouseEvent | KeyboardEvent): void {
         let m = new NamingModal({
             app: this.app,
             command: item,
@@ -39,10 +39,10 @@ export class CommandSuggestionModal extends FuzzySuggestModal<SuggestElement> {
 
 type NamingModalParams = {
     app: App,
-    command: SuggestElement,
+    command: CommandInfo,
 }
 class NamingModal extends Modal {
-    private command: SuggestElement;
+    private command: CommandInfo;
     constructor(params: NamingModalParams) {
         let { app, command } = params;
         super(app);
