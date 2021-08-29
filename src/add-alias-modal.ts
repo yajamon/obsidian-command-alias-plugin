@@ -29,7 +29,8 @@ export class CommandSuggestionModal extends FuzzySuggestModal<SuggestElement> {
         return item.commandName;
     }
     onChooseItem(item: SuggestElement, evt: MouseEvent | KeyboardEvent): void {
-        throw new Error("Method not implemented.");
+        let m = new NamingModal(this.app);
+        m.open();
     }
 }
 
