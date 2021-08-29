@@ -107,4 +107,13 @@ export default class CommandAliasPlugin extends Plugin {
 	async saveSettings() {
 		await this.saveData(this.settings);
 	}
+
+	addAliasSetting(aliasName: string, commandId: string) {
+		let aliasId = Date.now().toString();
+		console.log('Add id:', aliasId, 'alias:', aliasName, "command:", commandId);
+		this.settings.aliases[aliasId] = {
+			name: aliasName,
+			commandId: commandId,
+		}
+	}
 }
