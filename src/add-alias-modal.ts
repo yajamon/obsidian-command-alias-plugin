@@ -1,4 +1,4 @@
-import { App, FuzzySuggestModal, Modal } from "obsidian";
+import { App, FuzzySuggestModal, Modal, Setting } from "obsidian";
 import { AppExtension } from "./uncover-obsidian";
 
 interface CommandInfo {
@@ -53,7 +53,15 @@ class NamingModal extends Modal {
         let { contentEl } = this;
         contentEl.createEl('h2', { text: "Add alias" });
 
-        contentEl.createSpan({ text: this.command.name });
+        let aliasName = ""
+        new Setting(contentEl)
+            .setName('Add alias')
+            .setDesc(this.command.name)
+            .addText(text => text
+                .setPlaceholder('add alias')
+                .onChange(value => {
+                    aliasName = value.trim();
+                }));
     }
 
     onClose() {
