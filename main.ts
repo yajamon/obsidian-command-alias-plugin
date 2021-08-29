@@ -1,4 +1,4 @@
-import { App, Command, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { App, Command, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
 interface CommandAliasPluginSettings {
 	aliases: AliasMap;
@@ -57,7 +57,14 @@ export default class CommandAliasPlugin extends Plugin {
 				name: `${alias.name}: ${target.name}`,
 			};
 			if (target.callback) {
-				command.callback = target.callback;
+				command.callback = () => {
+					const target = app.commands.commands[alias.commandId];
+					if (target) {
+						target.callback();
+					} else {
+						new Notice("Missing command. The command may be invalid.");
+					}
+				};
 			}
 			if (target.checkCallback) {
 				command.checkCallback = target.checkCallback;
