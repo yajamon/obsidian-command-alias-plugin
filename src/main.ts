@@ -1,7 +1,7 @@
 import { Command, Notice, Plugin } from 'obsidian';
 import { AppExtension } from "./uncover-obsidian";
 import { CommandAliasPluginSettingTab } from "./setting-tab";
-
+import { CommandSuggestionModal } from "./add-alias-modal";
 interface CommandAliasPluginSettings {
 	aliases: AliasMap;
 }
@@ -27,6 +27,15 @@ export default class CommandAliasPlugin extends Plugin {
 		let app = this.app as AppExtension;
 
 		await this.loadSettings();
+
+		this.addCommand({
+			id: "add-alias",
+			name: "Add command alias",
+			callback: () => {
+				let modal = new CommandSuggestionModal(this.app);
+				modal.open();
+			},
+		});
 
 		for (const aliasId in this.settings.aliases) {
 			if (!Object.prototype.hasOwnProperty.call(this.settings.aliases, aliasId)) {

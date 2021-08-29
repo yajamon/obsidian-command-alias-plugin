@@ -9,6 +9,7 @@ export class CommandSuggestionModal extends FuzzySuggestModal<SuggestElement> {
     private items: SuggestElement[];
     constructor(app: App) {
         super(app);
+        this.items = [];
     }
 
     getItems(): SuggestElement[] {
