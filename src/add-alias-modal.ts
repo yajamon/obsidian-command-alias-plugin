@@ -58,12 +58,11 @@ class NamingModal extends Modal {
 
     onOpen() {
         let { contentEl } = this;
-        contentEl.createEl('h2', { text: "Add alias" });
+        contentEl.createEl('h2', { text: `Add alias: ${this.command.name}` });
 
         let aliasName = ""
         new Setting(contentEl)
-            .setName('Add alias')
-            .setDesc(this.command.name)
+            .setName('Naming alias')
             .addText(text => text
                 .setPlaceholder('add alias')
                 .onChange(value => {
