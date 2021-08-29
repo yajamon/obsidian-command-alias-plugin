@@ -2,7 +2,7 @@ import { App, FuzzySuggestModal, Modal } from "obsidian";
 import { AppExtension } from "./uncover-obsidian";
 
 interface CommandInfo {
-    commandId: string;
+    id: string;
     commandName: string;
 }
 
@@ -15,7 +15,7 @@ export class CommandSuggestionModal extends FuzzySuggestModal<CommandInfo> {
         let items: CommandInfo[] = [];
         for (let id in appex.commands.commands) {
             items.push({
-                commandId: id,
+                id: id,
                 commandName: appex.commands.commands[id].name,
             })
         }
