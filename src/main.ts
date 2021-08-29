@@ -32,7 +32,7 @@ export default class CommandAliasPlugin extends Plugin {
 			id: "add-alias",
 			name: "Add command alias",
 			callback: () => {
-				let modal = new CommandSuggestionModal(this.app);
+				let modal = new CommandSuggestionModal(this.app, this);
 				modal.open();
 			},
 		});

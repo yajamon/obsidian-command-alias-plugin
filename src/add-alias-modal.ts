@@ -1,4 +1,5 @@
 import { App, FuzzySuggestModal, Modal, Notice, Setting } from "obsidian";
+import CommandAliasPlugin from "./main";
 import { AppExtension } from "./uncover-obsidian";
 
 interface CommandInfo {
@@ -7,9 +8,11 @@ interface CommandInfo {
 }
 
 export class CommandSuggestionModal extends FuzzySuggestModal<CommandInfo> {
+    private plugin: CommandAliasPlugin;
     private items: CommandInfo[];
-    constructor(app: App) {
+    constructor(app: App, plugin: CommandAliasPlugin) {
         super(app);
+        this.plugin = plugin;
 
         let appex = app as AppExtension;
         let items: CommandInfo[] = [];
@@ -31,6 +34,7 @@ export class CommandSuggestionModal extends FuzzySuggestModal<CommandInfo> {
     onChooseItem(item: CommandInfo, evt: MouseEvent | KeyboardEvent): void {
         let m = new NamingModal({
             app: this.app,
+            plugin: this.plugin,
             command: item,
         });
         m.open();
@@ -39,13 +43,16 @@ export class CommandSuggestionModal extends FuzzySuggestModal<CommandInfo> {
 
 type NamingModalParams = {
     app: App,
+    plugin: CommandAliasPlugin,
     command: CommandInfo,
 }
 class NamingModal extends Modal {
+    private plugin: CommandAliasPlugin;
     private command: CommandInfo;
     constructor(params: NamingModalParams) {
-        let { app, command } = params;
+        let { app, plugin, command } = params;
         super(app);
+        this.plugin = plugin;
         this.command = command;
     }
 
