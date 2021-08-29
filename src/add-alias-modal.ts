@@ -71,11 +71,13 @@ class NamingModal extends Modal {
                 }))
             .addButton(button => button
                 .setButtonText('Add')
-                .onClick(e => {
+                .onClick(async e => {
                     if (aliasName === "") {
                         new Notice('alias name is empty');
                         return;
                     }
+                    this.plugin.addAliasSetting(aliasName, this.command.id);
+                    await this.plugin.saveSettings();
                 }));
     }
 
