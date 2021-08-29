@@ -79,6 +79,8 @@ class NamingModal extends Modal {
                     this.plugin.addAliasSetting(aliasName, this.command.id);
                     await this.plugin.saveSettings();
                     this.close();
+                    this.plugin.unload();
+                    this.plugin.load();
                 }));
     }
 
