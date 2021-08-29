@@ -69,16 +69,19 @@ export default class CommandAliasPlugin extends Plugin {
 			if (target.checkCallback) {
 				command.checkCallback = (checking) => {
 					const target = app.commands.commands[alias.commandId];
+					if (target) {
+						return target.checkCallback(checking);
+					}
 					if (checking) {
 						if (target) {
-							return target.checkCallback(checking);
+							// never
 						} else {
 							// Don't hide the probrem.
 							return true;
 						}
 					} else {
 						if (target) {
-							return target.checkCallback(checking);
+							// never
 						} else {
 							new Notice("Missing command. The command may be invalid.");
 						}
