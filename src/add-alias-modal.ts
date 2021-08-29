@@ -29,13 +29,19 @@ export class CommandSuggestionModal extends FuzzySuggestModal<SuggestElement> {
         return item.commandName;
     }
     onChooseItem(item: SuggestElement, evt: MouseEvent | KeyboardEvent): void {
-        let m = new NamingModal(this.app);
+        let m = new NamingModal({
+            app: this.app,
+        });
         m.open();
     }
 }
 
+type NamingModalParams = {
+    app: App,
+}
 class NamingModal extends Modal {
-    constructor(app: App) {
+    constructor(params: NamingModalParams) {
+        let { app } = params;
         super(app);
     }
 
