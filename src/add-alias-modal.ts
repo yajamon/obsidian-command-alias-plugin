@@ -3,7 +3,7 @@ import { AppExtension } from "./uncover-obsidian";
 
 interface CommandInfo {
     id: string;
-    commandName: string;
+    name: string;
 }
 
 export class CommandSuggestionModal extends FuzzySuggestModal<CommandInfo> {
@@ -16,7 +16,7 @@ export class CommandSuggestionModal extends FuzzySuggestModal<CommandInfo> {
         for (let id in appex.commands.commands) {
             items.push({
                 id: id,
-                commandName: appex.commands.commands[id].name,
+                name: appex.commands.commands[id].name,
             })
         }
         this.items = items;
@@ -26,7 +26,7 @@ export class CommandSuggestionModal extends FuzzySuggestModal<CommandInfo> {
         return this.items;
     }
     getItemText(item: CommandInfo): string {
-        return item.commandName;
+        return item.name;
     }
     onChooseItem(item: CommandInfo, evt: MouseEvent | KeyboardEvent): void {
         let m = new NamingModal({
@@ -53,7 +53,7 @@ class NamingModal extends Modal {
         let { contentEl } = this;
         contentEl.createEl('h2', { text: "Add alias" });
 
-        contentEl.createSpan({ text: this.command.commandName });
+        contentEl.createSpan({ text: this.command.name });
     }
 
     onClose() {
