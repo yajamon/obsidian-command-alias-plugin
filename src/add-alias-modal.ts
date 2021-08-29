@@ -17,6 +17,10 @@ export class CommandSuggestionModal extends FuzzySuggestModal<CommandInfo> {
         let appex = app as AppExtension;
         let items: CommandInfo[] = [];
         for (let id in appex.commands.commands) {
+            // Don't loop aliases.
+            if (id.startsWith('obsidian-command-alias-plugin:alias:')) {
+                continue;
+            }
             items.push({
                 id: id,
                 name: appex.commands.commands[id].name,
