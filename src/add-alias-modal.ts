@@ -1,4 +1,4 @@
-import { App, FuzzySuggestModal } from "obsidian";
+import { App, FuzzySuggestModal, Modal } from "obsidian";
 import { AppExtension } from "./uncover-obsidian";
 
 interface SuggestElement {
@@ -30,5 +30,21 @@ export class CommandSuggestionModal extends FuzzySuggestModal<SuggestElement> {
     }
     onChooseItem(item: SuggestElement, evt: MouseEvent | KeyboardEvent): void {
         throw new Error("Method not implemented.");
+    }
+}
+
+class NamingModal extends Modal {
+    constructor(app: App) {
+        super(app);
+    }
+
+    onOpen() {
+        let { contentEl } = this;
+        contentEl.createEl('h2', { text: "Add alias" });
+    }
+
+    onClose() {
+        let { contentEl } = this;
+        contentEl.empty();
     }
 }
