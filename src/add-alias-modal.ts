@@ -1,4 +1,4 @@
-import { App, FuzzySuggestModal, Modal, Setting } from "obsidian";
+import { App, FuzzySuggestModal, Modal, Notice, Setting } from "obsidian";
 import { AppExtension } from "./uncover-obsidian";
 
 interface CommandInfo {
@@ -61,6 +61,14 @@ class NamingModal extends Modal {
                 .setPlaceholder('add alias')
                 .onChange(value => {
                     aliasName = value.trim();
+                }))
+            .addButton(button => button
+                .setButtonText('Add')
+                .onClick(e => {
+                    if (aliasName === "") {
+                        new Notice('alias name is empty');
+                        return;
+                    }
                 }));
     }
 
