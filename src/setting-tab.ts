@@ -35,6 +35,7 @@ export class CommandAliasPluginSettingTab extends PluginSettingTab {
         let selectedCommandId = "";
         new Setting(containerEl)
             .setName('Select command')
+            .setDesc('*Obsolate*: Added useful commands. "Command Alias: Add command alias" does not require a manual reload of the plugin.')
             .addDropdown(dropdown => dropdown
                 .addOptions(options)
                 .onChange(value => {
@@ -56,12 +57,7 @@ export class CommandAliasPluginSettingTab extends PluginSettingTab {
                     if (selectedCommandId == "" || aliasName == "") {
                         return;
                     }
-                    let aliasId = Date.now().toString();
-                    console.log('Add id:', aliasId, 'alias:', aliasName, "command:", selectedCommandId);
-                    this.plugin.settings.aliases[aliasId] = {
-                        name: aliasName,
-                        commandId: selectedCommandId,
-                    }
+                    this.plugin.addAliasSetting(aliasName, selectedCommandId);
                     await this.plugin.saveSettings();
                     this.display();
                 }));

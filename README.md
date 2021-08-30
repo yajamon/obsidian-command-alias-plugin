@@ -5,9 +5,15 @@ The translated words help you understand the intent of the command, but they are
 
 ## Usage
 
-- Add alias at Plugin Settings.
-- Reload Plugin.
+- Run command `Command Alias: Add command alias`.
+- Choose command.
+- Naming alias.
 - Open the command palette and enter an alias in the box to narrow down the command.
+
+### Remove alias
+
+- Open SettingTab.
+- Remove alias.
 
 ## How to start develop
 
