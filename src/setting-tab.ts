@@ -32,36 +32,6 @@ export class CommandAliasPluginSettingTab extends PluginSettingTab {
 
         containerEl.createEl('h2', { text: 'Command alias' });
 
-        let selectedCommandId = "";
-        new Setting(containerEl)
-            .setName('Select command')
-            .setDesc('*Obsolate*: Added useful commands. "Command Alias: Add command alias" does not require a manual reload of the plugin.')
-            .addDropdown(dropdown => dropdown
-                .addOptions(options)
-                .onChange(value => {
-                    console.log("select command");
-                    selectedCommandId = value;
-                }));
-        let aliasName = "";
-        new Setting(containerEl)
-            .setName('Add alias')
-            .setDesc('Reload is required to apply.')
-            .addText(text => text
-                .setPlaceholder('alias name')
-                .onChange(value => {
-                    aliasName = value.trim();
-                }))
-            .addButton(button => button
-                .setButtonText('Add')
-                .onClick(async e => {
-                    if (selectedCommandId == "" || aliasName == "") {
-                        return;
-                    }
-                    this.plugin.addAliasSetting(aliasName, selectedCommandId);
-                    await this.plugin.saveSettings();
-                    this.display();
-                }));
-
         // remove alias
         containerEl.createEl('h3', { text: 'Register aliases' });
 
