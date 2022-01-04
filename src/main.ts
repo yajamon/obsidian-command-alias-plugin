@@ -47,12 +47,18 @@ export default class CommandAliasPlugin extends Plugin {
 		this.addSettingTab(new CommandAliasPluginSettingTab(this.app, this));
 	}
 
-	private addAliasCommand(aliasId: string) {
+	private async addAliasCommand(aliasId: string) {
 		let app = this.app as AppExtension;
 
 		const alias = this.settings.aliases[aliasId];
-		const target = app.commands.commands[alias.commandId];
-		if (target) {
+		const commandDetection = new Promise((resolve, reject) => {
+			let ref = app.commands.commands[alias.commandId];
+			if (ref != null) {
+				resolve(ref);
+			} else {
+				reject("Missing command");
+			}
+		}).then((target: Command) => {
 			let command: Command = {
 				id: `alias:${aliasId}`,
 				name: `${alias.name}: ${target.name}`,
@@ -82,7 +88,7 @@ export default class CommandAliasPlugin extends Plugin {
 				}
 			}
 			this.addCommand(command);
-		} else {
+		}).catch((reason) => {
 			// fallback
 			let command: Command = {
 				id: `alias:${aliasId}`,
@@ -93,7 +99,9 @@ export default class CommandAliasPlugin extends Plugin {
 				}
 			}
 			this.addCommand(command);
-		}
+		});
+
+		return commandDetection;
 	}
 
 	onunload() {
