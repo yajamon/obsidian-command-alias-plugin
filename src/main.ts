@@ -45,6 +45,8 @@ export default class CommandAliasPlugin extends Plugin {
 			},
 		});
 
+		this.addSettingTab(new CommandAliasPluginSettingTab(this.app, this));
+
 		let promises: Array<Promise<void>> = [];
 		for (const aliasId in this.settings.aliases) {
 			if (!Object.prototype.hasOwnProperty.call(this.settings.aliases, aliasId)) {
@@ -54,8 +56,6 @@ export default class CommandAliasPlugin extends Plugin {
 			promises.push(p);
 		}
 		await Promise.all(promises);
-
-		this.addSettingTab(new CommandAliasPluginSettingTab(this.app, this));
 	}
 
 	private async addAliasCommand(aliasId: string) {
