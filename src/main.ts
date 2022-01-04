@@ -18,6 +18,14 @@ const DEFAULT_SETTINGS: CommandAliasPluginSettings = {
 	aliases: {}
 }
 
+async function timeoutPromise(msec: number) {
+	return new Promise((resolve) => {
+		setTimeout(() => {
+			resolve(null);
+		}, msec);
+	});
+}
+
 export default class CommandAliasPlugin extends Plugin {
 	settings: CommandAliasPluginSettings;
 
@@ -49,15 +57,20 @@ export default class CommandAliasPlugin extends Plugin {
 
 	private async addAliasCommand(aliasId: string) {
 		let app = this.app as AppExtension;
+		const maxTry = 5;
+		const msecOfInterval = 200;
 
 		const alias = this.settings.aliases[aliasId];
-		const commandDetection = new Promise((resolve, reject) => {
-			let ref = app.commands.commands[alias.commandId];
-			if (ref != null) {
-				resolve(ref);
-			} else {
-				reject("Missing command");
+		const commandDetection = new Promise(async (resolve, reject) => {
+			for (let tried = 0; tried < maxTry; tried += 1) {
+				let ref = app.commands.commands[alias.commandId];
+				if (ref != null) {
+					resolve(ref);
+					return;
+				}
+				await timeoutPromise(msecOfInterval)
 			}
+			reject("Missing command");
 		}).then((target: Command) => {
 			let command: Command = {
 				id: `alias:${aliasId}`,
