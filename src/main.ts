@@ -45,12 +45,15 @@ export default class CommandAliasPlugin extends Plugin {
 			},
 		});
 
+		let promises: Array<Promise<void>> = [];
 		for (const aliasId in this.settings.aliases) {
 			if (!Object.prototype.hasOwnProperty.call(this.settings.aliases, aliasId)) {
 				continue;
 			}
-			this.addAliasCommand(aliasId);
+			let p = this.addAliasCommand(aliasId);
+			promises.push(p);
 		}
+		await Promise.all(promises);
 
 		this.addSettingTab(new CommandAliasPluginSettingTab(this.app, this));
 	}
