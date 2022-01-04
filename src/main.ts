@@ -4,6 +4,10 @@ import { CommandAliasPluginSettingTab } from "./setting-tab";
 import { CommandSuggestionModal } from "./add-alias-modal";
 interface CommandAliasPluginSettings {
 	aliases: AliasMap;
+	commandDetection: {
+		maxTry: number;
+		msecOfInterval: number;
+	}
 }
 
 type AliasMap = {
@@ -15,7 +19,11 @@ interface Alias {
 }
 
 const DEFAULT_SETTINGS: CommandAliasPluginSettings = {
-	aliases: {}
+	aliases: {},
+	commandDetection: {
+		maxTry: 5,
+		msecOfInterval: 200
+	}
 }
 
 async function timeoutPromise(msec: number) {
@@ -60,8 +68,7 @@ export default class CommandAliasPlugin extends Plugin {
 
 	private async addAliasCommand(aliasId: string) {
 		let app = this.app as AppExtension;
-		const maxTry = 5;
-		const msecOfInterval = 200;
+		const { maxTry, msecOfInterval } = this.settings.commandDetection;
 
 		const alias = this.settings.aliases[aliasId];
 		const commandDetection = new Promise(async (resolve, reject) => {
