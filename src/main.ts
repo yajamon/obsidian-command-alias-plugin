@@ -4,6 +4,10 @@ import { CommandAliasPluginSettingTab } from "./setting-tab";
 import { CommandSuggestionModal } from "./add-alias-modal";
 interface CommandAliasPluginSettings {
 	aliases: AliasMap;
+	commandDetection: {
+		maxTry: number;
+		msecOfInterval: number;
+	}
 }
 
 type AliasMap = {
@@ -15,7 +19,19 @@ interface Alias {
 }
 
 const DEFAULT_SETTINGS: CommandAliasPluginSettings = {
-	aliases: {}
+	aliases: {},
+	commandDetection: {
+		maxTry: 5,
+		msecOfInterval: 200
+	}
+}
+
+async function timeoutPromise(msec: number) {
+	return new Promise((resolve) => {
+		setTimeout(() => {
+			resolve(null);
+		}, msec);
+	});
 }
 
 export default class CommandAliasPlugin extends Plugin {
@@ -37,22 +53,35 @@ export default class CommandAliasPlugin extends Plugin {
 			},
 		});
 
+		this.addSettingTab(new CommandAliasPluginSettingTab(this.app, this));
+
+		let promises: Array<Promise<void>> = [];
 		for (const aliasId in this.settings.aliases) {
 			if (!Object.prototype.hasOwnProperty.call(this.settings.aliases, aliasId)) {
 				continue;
 			}
-			this.addAliasCommand(aliasId);
+			let p = this.addAliasCommand(aliasId);
+			promises.push(p);
 		}
-
-		this.addSettingTab(new CommandAliasPluginSettingTab(this.app, this));
+		await Promise.all(promises);
 	}
 
-	private addAliasCommand(aliasId: string) {
+	private async addAliasCommand(aliasId: string) {
 		let app = this.app as AppExtension;
+		const { maxTry, msecOfInterval } = this.settings.commandDetection;
 
 		const alias = this.settings.aliases[aliasId];
-		const target = app.commands.commands[alias.commandId];
-		if (target) {
+		const commandDetection = new Promise(async (resolve, reject) => {
+			for (let tried = 0; tried < maxTry; tried += 1) {
+				let ref = app.commands.commands[alias.commandId];
+				if (ref != null) {
+					resolve(ref);
+					return;
+				}
+				await timeoutPromise(msecOfInterval)
+			}
+			reject("Missing command");
+		}).then((target: Command) => {
 			let command: Command = {
 				id: `alias:${aliasId}`,
 				name: `${alias.name}: ${target.name}`,
@@ -82,7 +111,7 @@ export default class CommandAliasPlugin extends Plugin {
 				}
 			}
 			this.addCommand(command);
-		} else {
+		}).catch((reason) => {
 			// fallback
 			let command: Command = {
 				id: `alias:${aliasId}`,
@@ -93,7 +122,9 @@ export default class CommandAliasPlugin extends Plugin {
 				}
 			}
 			this.addCommand(command);
-		}
+		});
+
+		return commandDetection;
 	}
 
 	onunload() {

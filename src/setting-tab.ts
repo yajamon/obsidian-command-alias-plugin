@@ -32,6 +32,31 @@ export class CommandAliasPluginSettingTab extends PluginSettingTab {
 
         containerEl.createEl('h2', { text: 'Command alias' });
 
+        // command detection
+        containerEl.createEl('h3', { text: 'Command detection' });
+        new Setting(containerEl)
+            .setName('Maximum number of trials')
+            .addSlider(slider => slider
+                .setLimits(1, 10, 1)
+                .setValue(this.plugin.settings.commandDetection.maxTry)
+                .setDynamicTooltip()
+                .onChange(async value => {
+                    this.plugin.settings.commandDetection.maxTry = value;
+                    await this.plugin.saveSettings();
+                })
+            );
+        new Setting(containerEl)
+            .setName('Trial interval (msec)')
+            .addSlider(slider => slider
+                .setLimits(100, 1000, 100)
+                .setValue(this.plugin.settings.commandDetection.msecOfInterval)
+                .setDynamicTooltip()
+                .onChange(async value => {
+                    this.plugin.settings.commandDetection.msecOfInterval = value;
+                    await this.plugin.saveSettings();
+                })
+            );
+
         // remove alias
         containerEl.createEl('h3', { text: 'Register aliases' });
 
