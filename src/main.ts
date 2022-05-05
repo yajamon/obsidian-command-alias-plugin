@@ -40,7 +40,7 @@ export default class CommandAliasPlugin extends Plugin {
     async onload() {
         console.log('loading plugin');
 
-        const app = this.app as AppExtension;
+        // const app = this.app as AppExtension;
 
         await this.loadSettings();
 
