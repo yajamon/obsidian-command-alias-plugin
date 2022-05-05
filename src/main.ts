@@ -71,17 +71,17 @@ export default class CommandAliasPlugin extends Plugin {
         const { maxTry, msecOfInterval } = this.settings.commandDetection;
 
         const alias = this.settings.aliases[aliasId];
-        const commandDetection = new Promise(async (resolve, reject) => {
+        const detection = async () => {
             for (let tried = 0; tried < maxTry; tried += 1) {
                 const ref = app.commands.commands[alias.commandId];
                 if (ref != null) {
-                    resolve(ref);
-                    return;
+                    return Promise.resolve(ref);
                 }
                 await timeoutPromise(msecOfInterval)
             }
-            reject("Missing command");
-        }).then((target: Command) => {
+            return Promise.reject("Missing command");
+        };
+        const commandDetection = detection().then((target: Command) => {
             const command: Command = {
                 id: `alias:${aliasId}`,
                 name: `${alias.name}: ${target.name}`,
