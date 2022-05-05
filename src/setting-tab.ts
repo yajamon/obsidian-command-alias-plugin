@@ -11,7 +11,7 @@ export class CommandAliasPluginSettingTab extends PluginSettingTab {
     }
 
     display(): void {
-        let { containerEl } = this;
+        const { containerEl } = this;
 
         let app = this.app as AppExtension;
         let options: Record<string, string> = { "": "--- command list ---" };
