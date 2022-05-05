@@ -40,7 +40,7 @@ export default class CommandAliasPlugin extends Plugin {
     async onload() {
         console.log('loading plugin');
 
-        let app = this.app as AppExtension;
+        // const app = this.app as AppExtension;
 
         await this.loadSettings();
 
@@ -48,41 +48,41 @@ export default class CommandAliasPlugin extends Plugin {
             id: "add-alias",
             name: "Add command alias",
             callback: () => {
-                let modal = new CommandSuggestionModal(this.app, this);
+                const modal = new CommandSuggestionModal(this.app, this);
                 modal.open();
             },
         });
 
         this.addSettingTab(new CommandAliasPluginSettingTab(this.app, this));
 
-        let promises: Array<Promise<void>> = [];
+        const promises: Array<Promise<void>> = [];
         for (const aliasId in this.settings.aliases) {
             if (!Object.prototype.hasOwnProperty.call(this.settings.aliases, aliasId)) {
                 continue;
             }
-            let p = this.addAliasCommand(aliasId);
+            const p = this.addAliasCommand(aliasId);
             promises.push(p);
         }
         await Promise.all(promises);
     }
 
     private async addAliasCommand(aliasId: string) {
-        let app = this.app as AppExtension;
+        const app = this.app as AppExtension;
         const { maxTry, msecOfInterval } = this.settings.commandDetection;
 
         const alias = this.settings.aliases[aliasId];
-        const commandDetection = new Promise(async (resolve, reject) => {
+        const detection = async () => {
             for (let tried = 0; tried < maxTry; tried += 1) {
-                let ref = app.commands.commands[alias.commandId];
+                const ref = app.commands.commands[alias.commandId];
                 if (ref != null) {
-                    resolve(ref);
-                    return;
+                    return Promise.resolve(ref);
                 }
                 await timeoutPromise(msecOfInterval)
             }
-            reject("Missing command");
-        }).then((target: Command) => {
-            let command: Command = {
+            return Promise.reject("Missing command");
+        };
+        const commandDetection = detection().then((target: Command) => {
+            const command: Command = {
                 id: `alias:${aliasId}`,
                 name: `${alias.name}: ${target.name}`,
             };
@@ -113,7 +113,7 @@ export default class CommandAliasPlugin extends Plugin {
             this.addCommand(command);
         }).catch((reason) => {
             // fallback
-            let command: Command = {
+            const command: Command = {
                 id: `alias:${aliasId}`,
                 name: `${alias.name}: Missing command. Run this and try rebinding.`,
                 callback: () => {
@@ -140,7 +140,7 @@ export default class CommandAliasPlugin extends Plugin {
     }
 
     addAliasSetting(aliasName: string, commandId: string) {
-        let aliasId = Date.now().toString();
+        const aliasId = Date.now().toString();
         console.log('Add id:', aliasId, 'alias:', aliasName, "command:", commandId);
         this.settings.aliases[aliasId] = {
             name: aliasName,

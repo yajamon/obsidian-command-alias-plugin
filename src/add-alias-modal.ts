@@ -14,9 +14,9 @@ export class CommandSuggestionModal extends FuzzySuggestModal<CommandInfo> {
         super(app);
         this.plugin = plugin;
 
-        let appex = app as AppExtension;
-        let items: CommandInfo[] = [];
-        for (let id in appex.commands.commands) {
+        const appex = app as AppExtension;
+        const items: CommandInfo[] = [];
+        for (const id in appex.commands.commands) {
             // Don't loop aliases.
             if (id.startsWith('obsidian-command-alias-plugin:alias:')) {
                 continue;
@@ -36,7 +36,7 @@ export class CommandSuggestionModal extends FuzzySuggestModal<CommandInfo> {
         return item.name;
     }
     onChooseItem(item: CommandInfo, evt: MouseEvent | KeyboardEvent): void {
-        let m = new NamingModal({
+        const m = new NamingModal({
             app: this.app,
             plugin: this.plugin,
             command: item,
@@ -54,14 +54,14 @@ class NamingModal extends Modal {
     private plugin: CommandAliasPlugin;
     private command: CommandInfo;
     constructor(params: NamingModalParams) {
-        let { app, plugin, command } = params;
+        const { app, plugin, command } = params;
         super(app);
         this.plugin = plugin;
         this.command = command;
     }
 
     onOpen() {
-        let { contentEl } = this;
+        const { contentEl } = this;
         contentEl.createEl('h2', { text: `Add alias: ${this.command.name}` });
 
         let aliasName = ""
@@ -89,7 +89,7 @@ class NamingModal extends Modal {
     }
 
     onClose() {
-        let { contentEl } = this;
+        const { contentEl } = this;
         contentEl.empty();
     }
 }
