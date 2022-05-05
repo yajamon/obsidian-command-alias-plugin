@@ -1,5 +1,8 @@
 describe("Example", () => {
     test("1 less than 2", () => {
-        expect(1).toBeLessThan(2);
+        const one: number = parseInt("1");
+        expect(one).toBeLessThan(2);
     });
 });
+
+export { };
