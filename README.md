@@ -17,5 +17,5 @@ The translated words help you understand the intent of the command, but they are
 
 ## How to start develop
 
-1. `npm instal`
+1. `npm install`
 2. `npm run dev`
