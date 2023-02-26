@@ -38,8 +38,6 @@ export default class CommandAliasPlugin extends Plugin {
     settings: CommandAliasPluginSettings;
 
     async onload() {
-        console.log('loading plugin');
-
         // const app = this.app as AppExtension;
 
         await this.loadSettings();
@@ -128,7 +126,6 @@ export default class CommandAliasPlugin extends Plugin {
     }
 
     onunload() {
-        console.log('unloading plugin');
     }
 
     async loadSettings() {
@@ -141,7 +138,7 @@ export default class CommandAliasPlugin extends Plugin {
 
     addAliasSetting(aliasName: string, commandId: string) {
         const aliasId = Date.now().toString();
-        console.log('Add id:', aliasId, 'alias:', aliasName, "command:", commandId);
+        // console.log('Add id:', aliasId, 'alias:', aliasName, "command:", commandId);
         this.settings.aliases[aliasId] = {
             name: aliasName,
             commandId: commandId,

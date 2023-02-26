@@ -5,6 +5,8 @@ The translated words help you understand the intent of the command, but they are
 
 ## Usage
 
+[How to add Alias](https://user-images.githubusercontent.com/6084855/167056118-0b4120d1-fd97-4c82-bad1-83981409147d.mp4)
+
 - Run command `Command Alias: Add command alias`.
 - Choose command.
 - Naming alias.
@@ -17,5 +19,5 @@ The translated words help you understand the intent of the command, but they are
 
 ## How to start develop
 
-1. `npm instal`
+1. `npm install`
 2. `npm run dev`
