@@ -39,7 +39,6 @@ export class CommandAliasPluginSettingTab extends PluginSettingTab {
             .addDropdown(dropdown => dropdown
                 .addOptions(options)
                 .onChange(value => {
-                    console.log("select command");
                     selectedCommandId = value;
                 }));
         let aliasName = "";
