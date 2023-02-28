@@ -13,7 +13,7 @@ export class CommandAliasPluginSettingTab extends PluginSettingTab {
     display(): void {
         const { containerEl } = this;
 
-        let app = this.app as AppExtension;
+        const app = this.app as AppExtension;
         let options: Record<string, string> = { "": "--- command list ---" };
         for (const key in app.commands.commands) {
             if (!Object.prototype.hasOwnProperty.call(app.commands.commands, key)) {
