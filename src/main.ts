@@ -103,9 +103,8 @@ export default class CommandAliasPlugin extends Plugin {
                         if (checking) {
                             // Don't hide the probrem.
                             return true;
-                        } else {
-                            new Notice("Missing command. The command may be invalid.");
                         }
+                        new Notice("Missing command. The command may be invalid.");
                         return;
                     }
                     if (target.checkCallback) {
