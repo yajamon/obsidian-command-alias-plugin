@@ -91,7 +91,7 @@ export default class CommandAliasPlugin extends Plugin {
                         new Notice("Missing command. The command may be invalid.");
                         return;
                     }
-                    if (target) {
+                    if (target.callback) {
                         target.callback();
                     }
                 };
@@ -108,7 +108,7 @@ export default class CommandAliasPlugin extends Plugin {
                         }
                         return;
                     }
-                    if (target) {
+                    if (target.checkCallback) {
                         return target.checkCallback(checking);
                     }
                 }
