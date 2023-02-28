@@ -87,24 +87,28 @@ export default class CommandAliasPlugin extends Plugin {
             if (target.callback) {
                 command.callback = () => {
                     const target = app.commands.commands[alias.commandId];
-                    if (target) {
-                        target.callback();
-                    } else {
+                    if (!target) {
                         new Notice("Missing command. The command may be invalid.");
+                        return;
+                    }
+                    if (target.callback) {
+                        target.callback();
                     }
                 };
             }
             if (target.checkCallback) {
                 command.checkCallback = (checking) => {
                     const target = app.commands.commands[alias.commandId];
-                    if (target) {
-                        return target.checkCallback(checking);
-                    }
-                    if (checking) {
-                        // Don't hide the probrem.
-                        return true;
-                    } else {
+                    if (!target) {
+                        if (checking) {
+                            // Don't hide the probrem.
+                            return true;
+                        }
                         new Notice("Missing command. The command may be invalid.");
+                        return;
+                    }
+                    if (target.checkCallback) {
+                        return target.checkCallback(checking);
                     }
                 }
             }
