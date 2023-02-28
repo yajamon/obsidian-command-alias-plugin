@@ -21,7 +21,7 @@
     "esbuild": "^0.17.3",
     "eslint": "^8.6.0",
     "jest": "^27.5.0",
-    "obsidian": "^0.14.0",
+    "obsidian": "latest",
     "ts-jest": "^27.1.4",
     "ts-node": "^10.7.0",
     "tslib": "^2.2.0",
