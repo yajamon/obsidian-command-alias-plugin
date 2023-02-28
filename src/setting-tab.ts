@@ -65,10 +65,11 @@ export class CommandAliasPluginSettingTab extends PluginSettingTab {
                 continue;
             }
             const alias = this.plugin.settings.aliases[aliasId];
+            const aliasName = alias.name;
             const command = app.commands.commands[alias.commandId];
             const commandName = command.name || 'command missing';
             new Setting(containerEl)
-                .setName(alias.name)
+                .setName(aliasName)
                 .setDesc(commandName)
                 .addButton(button => button
                     .setButtonText('Remove')
