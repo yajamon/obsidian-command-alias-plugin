@@ -81,6 +81,16 @@ export class CommandAliasPluginSettingTab extends PluginSettingTab {
             });
         }
 
+        aliasesForRemove.sort((a, b) => {
+            if (a.aliasName < b.aliasName) {
+                return -1;
+            }
+            if (a.aliasName > b.aliasName) {
+                return 1;
+            }
+            return 0;
+        });
+
         // Render settings
         for (const { aliasId, aliasName, commandName } of aliasesForRemove) {
 
