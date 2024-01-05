@@ -13,8 +13,8 @@ export class CommandAliasPluginSettingTab extends PluginSettingTab {
     display(): void {
         const { containerEl } = this;
 
-        let app = this.app as AppExtension;
-        let options: Record<string, string> = { "": "--- command list ---" };
+        const app = this.app as AppExtension;
+        const options: Record<string, string> = { "": "--- command list ---" };
         for (const key in app.commands.commands) {
             if (!Object.prototype.hasOwnProperty.call(app.commands.commands, key)) {
                 continue;
@@ -60,15 +60,42 @@ export class CommandAliasPluginSettingTab extends PluginSettingTab {
         // remove alias
         containerEl.createEl('h3', { text: 'Register aliases' });
 
+        type RemoveAliasUnit = {
+            aliasId: string,
+            aliasName: string,
+            commandName: string,
+        }
+        const aliasesForRemove: RemoveAliasUnit[] = [];
         for (const aliasId in this.plugin.settings.aliases) {
             if (!Object.prototype.hasOwnProperty.call(this.plugin.settings.aliases, aliasId)) {
                 continue;
             }
             const alias = this.plugin.settings.aliases[aliasId];
+            const aliasName = alias.name;
             const command = app.commands.commands[alias.commandId];
             const commandName = command.name || 'command missing';
+            aliasesForRemove.push({
+                aliasId,
+                aliasName,
+                commandName,
+            });
+        }
+
+        aliasesForRemove.sort((a, b) => {
+            if (a.aliasName < b.aliasName) {
+                return -1;
+            }
+            if (a.aliasName > b.aliasName) {
+                return 1;
+            }
+            return 0;
+        });
+
+        // Render settings
+        for (const { aliasId, aliasName, commandName } of aliasesForRemove) {
+
             new Setting(containerEl)
-                .setName(alias.name)
+                .setName(aliasName)
                 .setDesc(commandName)
                 .addButton(button => button
                     .setButtonText('Remove')

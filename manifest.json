@@ -1,7 +1,7 @@
 {
   "id": "obsidian-command-alias-plugin",
   "name": "Command Alias",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "minAppVersion": "0.15.0",
   "description": "This plugin gives aliases to Obsidian commands.",
   "author": "yajamon<yajamon.cmnct@gmail.com>",
