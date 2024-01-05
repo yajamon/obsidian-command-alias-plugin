@@ -60,6 +60,12 @@ export class CommandAliasPluginSettingTab extends PluginSettingTab {
         // remove alias
         containerEl.createEl('h3', { text: 'Register aliases' });
 
+        type RemoveAliasUnit = {
+            aliasId: string,
+            aliasName: string,
+            commandName: string,
+        }
+        const aliasesForRemove: RemoveAliasUnit[] = [];
         for (const aliasId in this.plugin.settings.aliases) {
             if (!Object.prototype.hasOwnProperty.call(this.plugin.settings.aliases, aliasId)) {
                 continue;
@@ -68,6 +74,16 @@ export class CommandAliasPluginSettingTab extends PluginSettingTab {
             const aliasName = alias.name;
             const command = app.commands.commands[alias.commandId];
             const commandName = command.name || 'command missing';
+            aliasesForRemove.push({
+                aliasId,
+                aliasName,
+                commandName,
+            });
+        }
+
+        // Render settings
+        for (const { aliasId, aliasName, commandName } of aliasesForRemove) {
+
             new Setting(containerEl)
                 .setName(aliasName)
                 .setDesc(commandName)
